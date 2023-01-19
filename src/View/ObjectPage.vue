@@ -8,7 +8,8 @@
                     <el-button>增加</el-button>
                 </el-form>
                 <el-form style="text-align:left;padding-bottom: 1rem;">
-                    <el-table  border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}">
+                    <el-table  border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
+                :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }" >
                         <el-table-column fixed  label="图片" width="160">
                             图片本体<el-button>删除</el-button>
                         </el-table-column>
@@ -34,5 +35,9 @@ import { Search} from '@element-plus/icons-vue'
     background-image: url(../assets/black.png);
     background-repeat: no-repeat;
     background-size: cover;
+}
+.el-table-column{
+    align:"center";
+    header-align:"center"
 }
 </style>

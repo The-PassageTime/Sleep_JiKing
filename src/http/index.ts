@@ -44,3 +44,8 @@ const expModel = {
 export default {
     ...expModel
 };
+export const getToken = (parms: {}) =>{
+    return axios.post(http.value + "/login", parms); 
+}
+
+
