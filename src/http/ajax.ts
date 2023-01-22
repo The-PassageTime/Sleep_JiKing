@@ -38,5 +38,5 @@ export function put(url: any, req: any) {
 }
 
 export function del(url: any, req: any) {
-    return requsets.delete(url + req)
+    return requsets.delete(url, req)
 }
