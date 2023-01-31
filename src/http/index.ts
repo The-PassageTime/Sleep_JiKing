@@ -19,8 +19,8 @@ const expModel = {
         return axios.post(http.value + "/api/v1/exp/updateExp", param)
     },
     //模糊查询实验信息
-    selectExp:(name:any)=>{
-        return axios.get(http.value + "/api/v1/exp/selectExp", name)
+    selectExp:(keyWord:any)=>{
+        return axios.get(http.value + "/api/v1/exp/fuzzySearchExp" + keyWord)
     },
     //添加实验信息
     addExp:(param:any)=>{
@@ -30,15 +30,19 @@ const expModel = {
     //图片
     //查看上传的图片
     viewPhoto:(id:any)=>{
-        return axios.get(http.value + "/api/v1/exp/getExpImage" +id)
+        return axios.get(http.value + "/api/v1/exp/getExpImage" + id)
     },
     //提交图片
     commitPhoto:(id:any, param:any)=>{
-        return axios.post(http.value + "/api/v1/exp/postExpImage" + id, param)
+        return axios.post(http.value + "/api/v1/exp/postExpImage" + id, param,{
+            headers: {
+            'Content-Type':'multipart/form-data'
+            }
+        })
     },
     //删除图片
     delPhoto:(req:any)=>{
-        return axios.post(http.value + "/api/v1/exp/deleteExpImage" + req)
+        return axios.delete(http.value + "/api/v1/exp/deleteExpImage" + req)
     },
 
     //反应物
@@ -47,32 +51,32 @@ const expModel = {
         return axios.get(http.value + "/api/v1/rea/reaList" + id)
     },
     //更改反应物列表
-    updateReact:(req:any)=>{
-        return axios.post(http.value + "/api/v1/rea/UpdateReactant", req)
+    updateReact:(req:any,req2:any)=>{
+        return axios.post(http.value + "/api/v1/rea/UpdateReactant"+req, req2)
     },
     //删除反应物
     delReact:(req:any)=>{
-        return axios.delete(http.value + "/api/v1/rea/DelReactant", req)
+        return axios.delete(http.value + "/api/v1/rea/DelReactant" + req)
     },
     //添加反应物
-    addReact:(req:any)=>{
-        return axios.post(http.value + "/api/v1/rea/AddReactant", req)
+    addReact:(req:any,req1:any)=>{
+        return axios.post(http.value + "/api/v1/rea/AddReactant" + req, req1)
     },
     //查看生成物
     getresultant:(id:any)=>{
         return axios.get(http.value + "/api/v1/res/resList" + id)
     },
     //添加生成物
-    addresultant:(req:any)=>{
-        return axios.post(http.value + "/api/v1/res/AddResultant", req)
+    addresultant:(req:any, req1:any)=>{
+        return axios.post(http.value + "/api/v1/res/AddResultant" + req, req1)
     },
     //修改生成物
-    updateresultant:(req:any)=>{
-        return axios.post(http.value + "/api/v1/res/UpdateResultant", req)
+    updateresultant:(req:any,id:any)=>{
+        return axios.post(http.value + "/api/v1/res/UpdateResultant"+id, req)
     },
     //删除生成物
     delresultant:(req:any)=>{
-        return axios.delete(http.value + "/api/v1/res/Delsultant", req)
+        return axios.delete(http.value + "/api/v1/res/DelResultant" + req)
     },
     //查看催化剂
     getCata:(id:any)=>{
@@ -81,11 +85,11 @@ const expModel = {
     addCata:(req:any)=>{
         return axios.post(http.value + "/api/v1/cata/AddCata", req)
     },
-    updateCata:(req:any)=>{
-        return axios.post(http.value + "/api/v1/cata/UpdateCata", req)
+    updateCata:(req:any,req1:any)=>{
+        return axios.post(http.value + "/api/v1/cata/UpdateCata" + req1, req)
     },
     delCata:(req:any)=>{
-        return axios.delete(http.value + "/api/v1/cata/DelCata", req)
+        return axios.delete(http.value + "/api/v1/cata/DelCata" + req)
     },
 }
 

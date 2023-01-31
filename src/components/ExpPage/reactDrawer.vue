@@ -5,7 +5,7 @@
         <h3>查看反应物</h3>
         </template>
         <el-form style="text-align:left; padding-bottom: 1rem;">
-            <el-button :icon="Plus" @click="addReact">添加反应物</el-button>
+            <el-button :icon="Plus" @click="addReact" :disabled="!reactInfo.editVisible" >添加反应物</el-button>
         </el-form>
 
         <el-table :data="reactInfo.react"  
@@ -13,13 +13,9 @@
                 :header-cell-style="{ 'text-align': 'center' }"
                 :cell-style= "{textAlign:'center'}" 
                 :row-style="{height: '40px'}">
-
             <el-table-column label="编号">
                 <template v-slot="scope">
-                <span v-if="scope.$index === reactInfo.rowIndex">
-                    <el-input v-model.number="scope.row.Rea.reactantID" placeholder="ID"/>
-                </span>
-                <span v-else>{{scope.row.Rea.reactantID}}</span>
+                <span>{{scope.row.Rea.reactantID}}</span>
                 </template>
             </el-table-column>
 
@@ -35,9 +31,10 @@
             <el-table-column label="数量">
                 <template v-slot="scope">
                 <span v-if="scope.$index === reactInfo.rowIndex">
-                    <el-input v-model.number="scope.row.Rea.amount" placeholder="数量"/>
-                    /
-                    <el-input v-model="scope.row.Unit" placeholder="单位"/>
+                    <div>
+                        <div style="width:43px; display: inline-block;"><el-input v-model.number="scope.row.Rea.amount" placeholder="数量"/></div>
+                        <div style="width:30px; display: inline-block;"><span>/{{scope.row.Unit}}</span></div>
+                    </div>
                 </span>
                 <span v-else>{{scope.row.Rea.amount}}/{{ scope.row.Unit }}</span>
                 </template>
@@ -54,12 +51,11 @@
 
             <el-table-column label="操作" width="140px">
                 <template v-slot="scope">
-                    <el-button type="primary" :icon="Edit" @click="changeReact(scope.$index)" v-if="reactInfo.editVisible || scope.$index !== reactInfo.rowIndex" />
+                    <el-button type="primary" :icon="Edit" @click="changeReact(scope.$index)" v-if="reactInfo.editVisible || scope.$index !== reactInfo.rowIndex" :disabled="!reactInfo.editVisible"/>
                     <el-button type="primary" :icon="Finished" @click="commitReactChange(scope.$index)" v-if="reactInfo.finishVisible && scope.$index === reactInfo.rowIndex" />
-                    <el-button type="danger" :icon="Delete" @click="delReact(scope.$index)" ></el-button>
+                    <el-button type="danger" :icon="Delete" @click="delReact(scope.$index)" :disabled="(!reactInfo.editVisible) && scope.$index !== reactInfo.rowIndex" ></el-button>
                 </template>
             </el-table-column>
-
         </el-table> 
     </el-drawer>
 </template>
@@ -78,21 +74,23 @@ let reactInfo = reactive({
     finishVisible:false,
     exp_id:null,
     add:false,
-    test:false
 })
+const initInfo = []
 
 //查看反应物，显示抽屉
 async function showReact(id:any){
     reactInfo.exp_id = id
-    console.log("id")
-    console.log(id)
-    var req = "/{" + id + "}"
+    var req = "/" + id
     await $api.getReact(req).then(res=>{
-        console.log("res")
-        console.log(res)
-
         if(res.data.message == "操作成功"){
             reactInfo.react = res.data.data
+            for(let i = 0; i < res.data.data.length; i++){
+                initInfo[i] = res.data.data[i].Rea.reaName
+            }
+            reactInfo.editVisible = true
+            reactInfo.finishVisible = false
+            reactInfo.rowIndex = null
+            reactInfo.add = false
         }else{
             ElMessage({
                 message: '获取反应物信息失败！',
@@ -105,7 +103,6 @@ async function showReact(id:any){
 
 //添加反应物，多出一行
 function addReact(){
-    console.log("thishish")
     reactInfo.react.push({Rea:{reactantID:null, reaName:'', amount:null, remark:'', experimentID:reactInfo.exp_id},Unit:""})
     reactInfo.add = true
     reactInfo.editVisible = false
@@ -129,19 +126,16 @@ async function commitReactChange(index:number){
     }
 }
 
-//添加反应物
+//添加反应物，显示成功但更新不出
 async function commitAdd(index:number) {
-    var req1 = {
-        rea:reactInfo.react[index].Rea,
-        id:reactInfo.exp_id
-    }
-    await $api.addReact(req1).then(res=>{
-        console.log(res)
+    var req1 = "?id=" + reactInfo.exp_id
+    await $api.addReact(req1, reactInfo.react[index].Rea).then(res=>{
         if(res.data.message == "操作成功"){
             reactInfo.editVisible = true
             reactInfo.finishVisible = false
             reactInfo.rowIndex = null
-            reactInfo.add = false
+            reactInfo.add = false   
+            showReact(reactInfo.exp_id)
             ElMessage({
                 message: '添加成功！',
                 duration: 1000,
@@ -159,8 +153,11 @@ async function commitAdd(index:number) {
 
 //更改反应物
 async function commitChange(index:number) {
-    var req = reactInfo.react[index].Rea
-    await $api.updateReact(req).then(res=>{
+    var reaname = initInfo[index]
+    reaname = encodeURI(reaname)
+    reaname = encodeURI(reaname)
+    var req1 = "?expID=" + reactInfo.exp_id + "&name=" + reaname
+    await $api.updateReact(req1, reactInfo.react[index].Rea).then(res=>{
         if(res.data.message == "操作成功"){
             reactInfo.editVisible = true
             reactInfo.finishVisible = false
@@ -180,28 +177,33 @@ async function commitChange(index:number) {
     })
 }
 
-//删除反应物
+//删除反应物，但是显示不出
 async function delReact(index:number){
-    var req = {
-        id: reactInfo.react[index].Rea.experimentID,
-        name:reactInfo.react[index].Rea.reaName
+    if(reactInfo.add == true){
+        reactInfo.react.splice(index, 1)
+        reactInfo.add = false
+        reactInfo.editVisible = true
+        reactInfo.finishVisible = false
+        reactInfo.rowIndex = null
+    }else{
+        var req = "?id=" + reactInfo.react[index].Rea.experimentID + "&name=" + reactInfo.react[index].Rea.reaName
+        await $api.delReact(req).then(res=>{
+            if(res.data.message == "操作成功"){
+                ElMessage({
+                    message: '删除成功！',
+                    duration: 1000,
+                    type: 'success'
+                })
+                showReact(reactInfo.react[index].Rea.experimentID)
+            }else{
+                ElMessage({
+                    message: '删除失败！',
+                    duration: 1000,
+                    type: 'error'
+                })
+            }
+        })
     }
-    await $api.delReact(req).then(res=>{
-        if(res.data.message == "操作成功"){
-            ElMessage({
-                message: '删除成功！',
-                duration: 1000,
-                type: 'success'
-            })
-            showReact(req.id)
-        }else{
-            ElMessage({
-                message: '删除失败！',
-                duration: 1000,
-                type: 'error'
-            })
-        }
-    })
 }
 
 defineExpose({ showReact })

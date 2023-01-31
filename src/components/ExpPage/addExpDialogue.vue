@@ -4,14 +4,14 @@
         width="30%"
         :close-on-click-modal="false"
     >
-        <el-form :model="addInfo" label-width="auto" style="margin:20px;" >
-            <el-form-item label="实验编号:">
-            <el-input v-model.number="addInfo.experiment_id"/>
+        <el-form ref="ruleFormRef" :model="addInfo" :rules="rules" label-width="auto" style="margin:20px;" >
+            <el-form-item label="实验编号:" prop="experiment_id">
+                <el-input v-model.number="addInfo.experiment_id"/>
             </el-form-item>
-            <el-form-item label="实验名称:">
+            <el-form-item label="实验名称:" prop="experiment_name">
             <el-input v-model="addInfo.experiment_name" />
             </el-form-item>
-            <el-form-item label="实验时间:">
+            <el-form-item label="实验时间:" prop="conductDate">
             <el-date-picker
                 v-model="addInfo.conductDate"
                 type="date"
@@ -26,7 +26,7 @@
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="addExp">
+                <el-button type="primary" @click="submitForm(ruleFormRef)">
                     确认添加
                 </el-button>
             </span>
@@ -35,8 +35,9 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, defineProps} from "vue";
+import {reactive, defineProps, ref} from "vue";
 import { ElMessage } from 'element-plus'
+import type { FormInstance } from 'element-plus'
 import $api from "@/http/index"
 
 //添加实验信息
@@ -55,6 +56,7 @@ const props = defineProps({
 
 //添加实验
 async function addExp() {
+    console.log('提交成功add')
     await $api.addExp(addInfo).then(res =>{
         // 显示查询结果
         if(res.status == 200){
@@ -79,6 +81,27 @@ async function addExp() {
         }
     })
 }
+
+const ruleFormRef = ref<FormInstance>()
+
+const rules = reactive({
+    experiment_id: [{ required: true, message: '请输入实验编号！', trigger: 'blur' },],
+    experiment_name: [{ required: true, message: '请输入实验名称！', trigger: 'blur' },],
+    conductDate: [{ required: true, message: '请输入实验日期！', trigger: 'blur' },],
+})
+
+const submitForm = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    await formEl.validate((valid) => {
+        if (valid) {
+            addExp()
+        } else {
+            console.log('提交错误')
+            return false
+        }
+    })
+}
+
 </script>
 
 <style>

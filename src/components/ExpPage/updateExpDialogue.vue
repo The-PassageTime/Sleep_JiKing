@@ -5,21 +5,21 @@
         :close-on-click-modal="false"
     >
         <el-form :model="updateInfo" label-width="auto" style="margin:20px;" >
-            
             <el-form-item label="实验名称:">
-            <el-input v-model="updateInfo.experiment_name" />
+                <el-input v-model="updateInfo.experiment_name" />
             </el-form-item>
+
             <el-form-item label="实验时间:">
-            <el-date-picker
-                v-model="updateInfo.conductDate"
-                type="date"
-                style="width: 400px"
-                value-format="YYYY-MM-DD"
-            ></el-date-picker>
-            
+                <el-date-picker
+                    v-model="updateInfo.conductDate"
+                    type="date"
+                    style="width: 400px"
+                    value-format="YYYY-MM-DD"
+                ></el-date-picker>
             </el-form-item>
+
             <el-form-item label="备注:">
-            <el-input v-model="updateInfo.remark" />
+                <el-input v-model="updateInfo.remark" />
             </el-form-item>
         </el-form>
         <template #footer>
@@ -62,9 +62,6 @@ function changeExp(expList:[], id:number, index:number) {
 //提交修改实验内容，返回信息没有统一
 async function commitChange() {
     await $api.updateExp(updateInfo).then((res)=>{
-        // console.log(updateInfo)
-        // console.log(typeof(updateInfo.conductDate))
-
         if(res.data.message == "操作成功"){
             //修改成功
             ElMessage({
@@ -74,7 +71,6 @@ async function commitChange() {
             })
             // 调用父组件的方法
             props.changeExpList(updateInfo)
-
         }else{
             //查询失败
             ElMessage({

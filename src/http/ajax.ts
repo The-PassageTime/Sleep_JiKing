@@ -9,6 +9,7 @@ requsets.interceptors.request.use(
     config => {
         return config;
     }
+
 );
 
 //响应拦截器
@@ -26,7 +27,7 @@ requsets.interceptors.response.use(
 );
 
 export function get(url: any, req: any) {
-    return requsets.get(url + req)
+    return requsets.get(url, req)
 }
 
 export function post(url: any, req: any) {

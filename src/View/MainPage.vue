@@ -71,10 +71,10 @@
                                     </li>
                                 </template>
                                 {{scope.row.cataName?.[0]}}
+                                </el-tooltip>
                                 <el-link>
                                     <el-icon class="el-icon--right" @click="showCata(scope.row.Exp.experiment_id)" size="large"><Edit /></el-icon>
                                 </el-link>
-                            </el-tooltip>
                             </div>
                             <div v-else>
                                 {{scope.row.cataName?.[0]}}
@@ -157,29 +157,30 @@ async function getList_num() {
     await $api.All_ExeList().then((res)=>{
         data.allData = res.data.data.ExpCount;
         data.expList = res.data.data.ExpSerialList;
-        console.log("res");
-        console.log(res);
-        console.log(data.allData);
-        console.log(data.expList);
     })
 }
 
 //根据实验名称，模糊查询，未接好，后端无对应接口
 async function selectExp() {
-    await $api.selectExp(data.selectName).then(res =>{
-        console.log("res");
-        console.log(res);
-        // 显示查询结果
+    let req = "?keyWord=" + data.selectName
+    await $api.selectExp(req).then(res =>{
+        if(res.data.message == "操作成功"){
+            // 显示查询结果
+            data.expList = res.data.data.ExpSerialList
+        }else{
+            ElMessage({
+                message: '查询失败！',
+                duration: 1000,
+                type: 'error'
+            })
+        }
     })
 }
 
 //删除实验
 async function deleteExp(id:number, index:number) {
-    const req = "/{" + id + "}";
-    console.log(req);
+    const req = "/" + id;
     await $api.delExp(req).then(res =>{
-        console.log("res");
-        console.log(res);
         //如果删除失败，弹窗展示失败，否则成功
         //成功后删除对应的行
         if(res.data.data == "删除成功！"){
