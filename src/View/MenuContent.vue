@@ -23,7 +23,9 @@ export default {
 .Exe_All{
     background-color: rgb(143, 150, 170);
 }
-
+.el-menu--horizontal {
+    border-bottom: solid 1px #4c74d300;
+}
 :root {
     --el-menu-active-color: #ffffff;
     --el-menu-text-color: b3b0c4!important;

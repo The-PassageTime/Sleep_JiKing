@@ -284,6 +284,8 @@ async function showCata(id:null) {
 .demo-image__lazy .el-image:last-child {
   margin-bottom: 0;
 }
-
+.el-link {
+    color:#909399!important
+}
 
 </style>

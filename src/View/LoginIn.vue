@@ -81,7 +81,7 @@ const FindPass = () => (
 </script>
 <style>
 .el-dialog {
-  background-color:#272b33 !important;
+  background-color:#3a414e !important;
 }
 .Big{
   display: flex;
