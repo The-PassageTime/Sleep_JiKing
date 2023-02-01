@@ -5,14 +5,14 @@
       <div class="Sleep">
           <el-row>
               <el-col >
-                  <ul v-if="!store.state.UName" class="ul-1">
+                  <ul v-if="!store.state.UId" class="ul-1">
                       <li  @click="OpenLogin">
                           <el-link :underline="false" class="Rema_link">登录</el-link>
                       </li>
                   </ul>
                   <ul v-else class="ul-1">
                        <li >
-                          <el-link :underline="false">{{ store.state.UName }}</el-link>
+                          <el-link :underline="false">{{ store.state.UId }}</el-link>
                       </li>
                       <li  @click="LoginOut">
                           <el-link :underline="false">注销</el-link>
@@ -42,11 +42,9 @@ const OpenLogin = () => {
 
 
 const LoginOut = () => {
-  localStorage.removeItem('UName');
-  //localStorage.removeItem('token');
-  store.commit('SettingUName', '')
-  console.log(store.state)
-  router.push('/')
+  localStorage.removeItem('UId');
+  store.commit('SettingUId', '')
+  router.push('/MainPage')
 }
 </script>
 

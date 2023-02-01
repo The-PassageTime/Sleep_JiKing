@@ -1,9 +1,7 @@
 
 <template>
-    <el-dialog v-model="IsShowLogin" title="登&emsp;&emsp;录" width="700px" height="800px"  :before-close="handleClose">
+    <el-dialog v-model="IsShowLogin" title="登&emsp;&emsp;录" width="500px" height="800px"  :before-close="handleClose">
       <div class="Big">
-        <div class="One">
-        </div>
         <div class="Two">
           <el-form :model="form" label-width="60px" style="padding-right:20px">
         <el-form-item label="账号"  >
@@ -26,13 +24,15 @@
   </template>
   <script lang="ts" setup>
   import FindContent from "./FindContent.vue";
-  import { computed, ref, nextTick } from "vue";
+  import { computed, ref} from "vue";
   import { useStore } from 'vuex'
   import { getToken } from '../http/index'
+  //import $api from "@/http/index"
   import { ElMessage } from 'element-plus'
+import router from "@/routes";
   //import router from "@/routes";
-  import { useRouter } from 'vue-router'
-  const router = useRouter()
+  //import { useRouter } from 'vue-router'
+  //const router = useRouter()
   const store = useStore()
   const IsShowLogin = computed(() => store.state.IsShowLogin)
   const handleClose = (done: () => void) => {
@@ -45,33 +45,31 @@
     UName: "",
     UPassword: "",
   }
-  
+
   const Submit = async () => {
     var data = {
       uid: form.value.UId,
-      upassword: form.value.UPassword,
+      passWord: form.value.UPassword,
     }
     var res = (await getToken(data)).data;
-    if (res.msg=='OK') {
-      router.push('/ExercisePage')
+    console.log(res.data.token);
+    if (res.code== 1001) {
       ElMessage({
-        message: res.data[0],
+        message: "登录成功",
         type: 'success',
       })
-      //
-      nextTick(()=>{
-        //
-      })
-      store.commit('SettingUName', res.data[0])
-      store.commit('SettingUId', res.data[1])
-      store.commit('SettingURole', res.data[2])
-      console.log(res.data);
-      console.log(store.state.URole);
+      store.commit('SettingUId',res.data.uid)
+      store.commit('SettingAAA',res.data.token)
+      localStorage["token"] = res.data.token;
       store.commit('CloseLogin')
+      router.push("/MenuContent")
+
     } else {
       ElMessage.error(res.msg)
     }
   }
+//function Submit(){}
+
 const FindPass = () => (
   console.log('CloseLogin'),
   store.commit('CloseLogin'),

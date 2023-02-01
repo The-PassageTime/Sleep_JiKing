@@ -1,15 +1,16 @@
 import axios from "axios";
 
+
 const requsets = axios.create({
     timeout: 60 * 1000,
 });
 
 //请求拦截器
 requsets.interceptors.request.use(
-    config => {
-        return config;
+    config =>{
+            config.headers!['Authorization'] = localStorage["token"];
+        return config
     }
-
 );
 
 //响应拦截器
@@ -41,3 +42,5 @@ export function put(url: any, req: any) {
 export function del(url: any, req: any) {
     return requsets.delete(url, req)
 }
+
+export default requsets;

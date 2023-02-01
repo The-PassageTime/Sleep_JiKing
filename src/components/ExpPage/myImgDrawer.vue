@@ -6,7 +6,7 @@
 
         <div class="demo-image">
             <div v-for="url in data.urls" :key="url" class="block">
-                <el-image style="width: 300px; height: 533px;" :src="url" fit="fill"></el-image>
+                <el-image  :src="url" fit="fill"></el-image>
                 <div>
                     <el-button type="danger" :icon="Delete" circle  @click="delImg(url)"></el-button>
                     <el-divider border-style="dashed" />

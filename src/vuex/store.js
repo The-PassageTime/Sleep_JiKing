@@ -5,7 +5,7 @@ const store = createStore({
             IsShowLogin :false,
             IsShowFind : false,
             UId: localStorage["UId"],
-            UName: localStorage["UName"],         
+            AAA: localStorage["AAA"],   
         }
     },
     mutations:{
@@ -21,11 +21,11 @@ const store = createStore({
         CloseLogin(state){
             state.IsShowLogin = false;
         },
-        SettingUName(state, UName){
-            state.UName = UName;
-        },
         SettingUId(state, UId){
             state.UId = UId;
+        },
+        SettingAAA(state, AAA){
+            state.AAA = AAA;
         },
     }
 })
