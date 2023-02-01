@@ -12,7 +12,7 @@
                     <el-table :data="Alldata.ObjList" border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
                 :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }" >
                         <el-table-column   label="图片" width="160">
-                            图片本体
+                            <el-img></el-img>
                         </el-table-column>
                         <el-table-column  prop="name" label="名称" width="160" />
                         <el-table-column  prop="unit" label="单位" width="160" />
@@ -40,7 +40,7 @@ onMounted( async ()=>{
 
 async function Get_Objlist () {
     await $api.All_ObjList().then((res)=>{
-        Alldata.ObjList = res.data.data;
+        Alldata.ObjList = res.data;
     })
 }
 </script>
