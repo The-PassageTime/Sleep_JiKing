@@ -2,6 +2,9 @@
 <template>
     <el-dialog v-model="IsShowLogin" title="登&emsp;&emsp;录" width="500px" height="800px"  :before-close="handleClose">
       <div class="Big">
+        <div class="One">
+          <el-image src="src/assets/black.png" fit="contain" />
+        </div>
         <div class="Two">
           <el-form :model="form" label-width="60px" style="padding-right:20px">
         <el-form-item label="账号"  >
@@ -29,10 +32,7 @@
   import { getToken } from '../http/index'
   //import $api from "@/http/index"
   import { ElMessage } from 'element-plus'
-import router from "@/routes";
-  //import router from "@/routes";
-  //import { useRouter } from 'vue-router'
-  //const router = useRouter()
+  import router from "@/routes";
   const store = useStore()
   const IsShowLogin = computed(() => store.state.IsShowLogin)
   const handleClose = (done: () => void) => {

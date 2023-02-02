@@ -1,8 +1,8 @@
 <template>
-<div class="AllO"></div>
+<div class="XOO"></div>
 </template>
 <style>
-.AllO{
+.XOO{
     height: 800px;
     padding: 1rem 0.85rem 1.5rem 0.85rem;
     background-image: url(../assets/black.png);

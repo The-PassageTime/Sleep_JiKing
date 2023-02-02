@@ -12,12 +12,13 @@
                     <el-table :data="Alldata.ObjList" border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
                 :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }" >
                         <el-table-column   label="图片" width="160">
-                            <el-img></el-img>
+                            <el-img  src="/img/Why.png" fit="fill"></el-img>
                         </el-table-column>
                         <el-table-column  prop="name" label="名称" width="160" />
                         <el-table-column  prop="unit" label="单位" width="160" />
                         <el-table-column   label="备注" width="160"/>
                         <el-table-column   label="操作">
+                            <el-button></el-button>
                         </el-table-column>
                     </el-table>   
                 </el-form>
