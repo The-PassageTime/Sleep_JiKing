@@ -66,11 +66,11 @@ async function viewPhoto(experiment_id:any) {
     data.photoExpid = experiment_id
     let req = "?id=" + experiment_id;
     await $api.viewPhoto(req).then(res =>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             data.urls = []
-            if(res.data.data !== null){
-                for(let i = 0; i < res.data.data.length; i++) {
-                    let url = "http://120.26.64.169:80" + res.data.data[i]
+            if(res.data !== null){
+                for(let i = 0; i < res.data.length; i++) {
+                    let url = "http://120.26.64.169:80" + res.data[i]
                     data.urls.push(url)
                 }
                 data.emptyVisible = false
@@ -113,7 +113,7 @@ async function commitPhoto(){
     await $api.commitPhoto(req, urlList).then(res =>{
         data.fileList = []
         data.urlList = []
-        if(res.data.message == null){
+        if(res.message == null){
             data.fileList = []
             data.urlList = []
         }
@@ -130,7 +130,7 @@ async function delImg(url){
     //实验id和img名字
     const req = "?id=" + data.photoExpid + "&fileName=" + imgname[0];
     await $api.delPhoto(req).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             for (let i=0; i<data.urls.length; i++){
                 if(data.urls[i] == url){
                     data.urls.splice(i,1)

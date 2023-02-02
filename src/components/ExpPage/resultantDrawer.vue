@@ -85,10 +85,10 @@ async function showResultant(id:any){
 resultantInfo.exp_id = id
 var req = "/" + id
 await $api.getresultant(req).then(res=>{
-    if(res.data.message == "操作成功"){
-        resultantInfo.resultant = res.data.data
-        for(let i = 0; i < res.data.data.length; i++){
-            initInfo[i] = res.data.data[i].Res.resName
+    if(res.message == "操作成功"){
+        resultantInfo.resultant = res.data
+        for(let i = 0; i < res.data.length; i++){
+            initInfo[i] = res.data[i].Res.resName
         }
         resultantInfo.editVisible = true
         resultantInfo.finishVisible = false
@@ -133,7 +133,7 @@ async function commitresultantChange(index:number){
 async function commitAdd(index:number) {
     var req1 = "?id=" + resultantInfo.exp_id
     await $api.addresultant(req1, resultantInfo.resultant[index].Res).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             resultantInfo.editVisible = true
             resultantInfo.finishVisible = false
             resultantInfo.rowIndex = null
@@ -161,7 +161,7 @@ async function commitChange(index:number) {
     resname = encodeURI(resname)
     var req2 = "?expID=" + resultantInfo.exp_id + "&name=" + resname
     await $api.updateresultant(resultantInfo.resultant[index].Res, req2).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             resultantInfo.editVisible = true
             resultantInfo.finishVisible = false
             resultantInfo.rowIndex = null
@@ -192,7 +192,7 @@ async function delresultant(index:number){
     }else{
         var req = "?id=" + resultantInfo.resultant[index].Res.experimentID + "&name=" + resultantInfo.resultant[index].Res.resName
         await $api.delresultant(req).then(res=>{
-            if(res.data.message == "操作成功"){
+            if(res.message == "操作成功"){
                 ElMessage({
                     message: '删除成功！',
                     duration: 1000,

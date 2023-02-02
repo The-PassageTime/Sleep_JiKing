@@ -155,8 +155,8 @@ onMounted(async () =>{
 //加载所有实验
 async function getList_num() {
     await $api.All_ExeList().then((res)=>{
-        data.allData = res.data.data.ExpCount;
-        data.expList = res.data.data.ExpSerialList;
+        data.allData = res.data.ExpCount;
+        data.expList = res.data.ExpSerialList;
     })
 }
 
@@ -164,9 +164,9 @@ async function getList_num() {
 async function selectExp() {
     let req = "?keyWord=" + data.selectName
     await $api.selectExp(req).then(res =>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             // 显示查询结果
-            data.expList = res.data.data.ExpSerialList
+            data.expList = res.data.ExpSerialList
         }else{
             ElMessage({
                 message: '查询失败！',
@@ -183,7 +183,7 @@ async function deleteExp(id:number, index:number) {
     await $api.delExp(req).then(res =>{
         //如果删除失败，弹窗展示失败，否则成功
         //成功后删除对应的行
-        if(res.data.data == "删除成功！"){
+        if(res.data == "删除成功！"){
             data.expList.splice(index, 1)
             ElMessage({
                 message: '删除实验成功！',

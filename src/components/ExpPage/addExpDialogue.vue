@@ -59,7 +59,7 @@ async function addExp() {
     console.log('提交成功add')
     await $api.addExp(addInfo).then(res =>{
         // 显示查询结果
-        if(res.status == 200){
+        if(res.message == "操作成功"){
             //添加成功
             props.addExpRes()
             ElMessage({
