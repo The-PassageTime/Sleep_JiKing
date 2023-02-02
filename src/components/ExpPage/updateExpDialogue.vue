@@ -62,7 +62,7 @@ function changeExp(expList:[], id:number, index:number) {
 //提交修改实验内容，返回信息没有统一
 async function commitChange() {
     await $api.updateExp(updateInfo).then((res)=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             //修改成功
             ElMessage({
                 message: '修改实验成功！',

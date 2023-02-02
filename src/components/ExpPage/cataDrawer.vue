@@ -84,10 +84,10 @@ async function showCata(id:any){
 CataInfo.exp_id = id
 var req = "?expID=" + id
 await $api.getCata(req).then(res=>{
-    if(res.data.message == "操作成功"){
-        CataInfo.cata = res.data.data
-        for(let i = 0; i < res.data.data.length; i++){
-            initInfo[i] = res.data.data[i].Cata.cataName
+    if(res.message == "操作成功"){
+        CataInfo.cata = res.data
+        for(let i = 0; i < res.data.length; i++){
+            initInfo[i] = res.data[i].Cata.cataName
         }
         CataInfo.editVisible = true
         CataInfo.finishVisible = false
@@ -131,8 +131,7 @@ async function commitCataChange(index:number){
 //添加催化剂
 async function commitAdd(index:number) {
     await $api.addCata(CataInfo.cata[index].Cata).then(res=>{
-        console.log(res)
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             CataInfo.editVisible = true
             CataInfo.finishVisible = false
             CataInfo.rowIndex = null
@@ -161,7 +160,7 @@ cataname = encodeURI(cataname)
     var req1 = "?expID=" + CataInfo.exp_id + "&name=" + cataname
     var req = CataInfo.cata[index].Cata
     await $api.updateCata(req, req1).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             CataInfo.editVisible = true
             CataInfo.finishVisible = false
             CataInfo.rowIndex = null
@@ -192,7 +191,7 @@ async function delCata(index:number){
     }else{
         var req = "?expID=" + CataInfo.exp_id + "&name=" + CataInfo.cata[index].Cata.cataName
         await $api.delCata(req).then(res=>{
-            if(res.data.message == "操作成功"){
+            if(res.message == "操作成功"){
                 ElMessage({
                     message: '删除成功！',
                     duration: 1000,

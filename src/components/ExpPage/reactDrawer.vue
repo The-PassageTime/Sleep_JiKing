@@ -82,10 +82,10 @@ async function showReact(id:any){
     reactInfo.exp_id = id
     var req = "/" + id
     await $api.getReact(req).then(res=>{
-        if(res.data.message == "操作成功"){
-            reactInfo.react = res.data.data
-            for(let i = 0; i < res.data.data.length; i++){
-                initInfo[i] = res.data.data[i].Rea.reaName
+        if(res.message == "操作成功"){
+            reactInfo.react = res.data
+            for(let i = 0; i < res.data.length; i++){
+                initInfo[i] = res.data[i].Rea.reaName
             }
             reactInfo.editVisible = true
             reactInfo.finishVisible = false
@@ -130,7 +130,7 @@ async function commitReactChange(index:number){
 async function commitAdd(index:number) {
     var req1 = "?id=" + reactInfo.exp_id
     await $api.addReact(req1, reactInfo.react[index].Rea).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             reactInfo.editVisible = true
             reactInfo.finishVisible = false
             reactInfo.rowIndex = null
@@ -158,7 +158,7 @@ async function commitChange(index:number) {
     reaname = encodeURI(reaname)
     var req1 = "?expID=" + reactInfo.exp_id + "&name=" + reaname
     await $api.updateReact(req1, reactInfo.react[index].Rea).then(res=>{
-        if(res.data.message == "操作成功"){
+        if(res.message == "操作成功"){
             reactInfo.editVisible = true
             reactInfo.finishVisible = false
             reactInfo.rowIndex = null
@@ -188,7 +188,7 @@ async function delReact(index:number){
     }else{
         var req = "?id=" + reactInfo.react[index].Rea.experimentID + "&name=" + reactInfo.react[index].Rea.reaName
         await $api.delReact(req).then(res=>{
-            if(res.data.message == "操作成功"){
+            if(res.message == "操作成功"){
                 ElMessage({
                     message: '删除成功！',
                     duration: 1000,
