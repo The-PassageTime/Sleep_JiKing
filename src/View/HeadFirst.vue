@@ -44,7 +44,7 @@ const OpenLogin = () => {
 const LoginOut = () => {
   localStorage.removeItem('UId');
   store.commit('SettingUId', '')
-  router.push('/MainPage')
+  router.push('/')
 }
 </script>
 

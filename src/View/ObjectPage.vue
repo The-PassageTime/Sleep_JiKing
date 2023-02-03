@@ -16,7 +16,7 @@
                         </el-table-column>
                         <el-table-column  prop="name" label="名称" width="160" />
                         <el-table-column  prop="unit" label="单位" width="160" />
-                        <el-table-column   label="备注" width="160"/>
+                        <el-table-column  prop="remark" label="备注" width="160"/>
                         <el-table-column   label="操作">
                             <el-button></el-button>
                         </el-table-column>
