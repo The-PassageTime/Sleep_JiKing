@@ -27,11 +27,11 @@ export default {
     border-bottom: solid 1px #4c74d300!important;
 }
 :root {
-    --el-menu-active-color: #ffffff;
+    --el-menu-active-color: #ffffff!important;
     --el-menu-text-color: b3b0c4!important;
     --el-menu-hover-text-color: var(--el-color-primary);
-    --el-menu-bg-color: rgba(0,0,0,0);
-    --el-menu-hover-bg-color: rgba(0,0,0,0);
+    --el-menu-bg-color: rgba(0,0,0,0)!important;
+    --el-menu-hover-bg-color: rgba(0,0,0,0)!important;
     --el-menu-item-font-size: var(--el-font-size-base);
     --el-menu-item-hover-fill: var(--el-color-primary-light-9);
 }

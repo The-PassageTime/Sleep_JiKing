@@ -7,10 +7,11 @@
                     <el-input placeholder="只能根据实验名称查询" v-model="data.selectName" style="width:20rem; padding-right: 1rem;" clearable/>
                     <el-button :icon="Search" @click="selectExp">搜索</el-button>
                     <el-button :icon="Plus" @click="data.addVisible = true">添加实验</el-button>
+                    <el-button :icon="Refresh" @click="AA"></el-button>
                 </el-form>
 
                 <el-table :data="data.expList" border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
-                :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }" >
+                :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }"  >
                     <el-table-column prop="Exp.experiment_id" label="实验编号" width="130" ></el-table-column>
                     <el-table-column prop="Exp.experiment_name" label="实验名称" width="130"></el-table-column>
                     <el-table-column label="反应物" width="130">                       
@@ -121,6 +122,7 @@
 </template>
 
 <script lang="ts" setup>
+//import { nextTick} from "vue";
 import $api from "@/http/index"
 import reactDrawer from "@/components/ExpPage/reactDrawer.vue";
 import updateExpDialogue from "@/components/ExpPage/updateExpDialogue.vue"
@@ -128,10 +130,10 @@ import addExpDialogue from "@/components/ExpPage/addExpDialogue.vue";
 import myImgDrawer from "@/components/ExpPage/myImgDrawer.vue";
 import resultantDrawer from "@/components/ExpPage/resultantDrawer.vue";
 import cataDrawer from "@/components/ExpPage/cataDrawer.vue";
-
+//import router from "@/routes";
 import {onMounted,reactive,ref} from "vue";
 import { ElMessage } from 'element-plus'
-import { Search,Plus,Edit} from "@element-plus/icons-vue"
+import { Search,Plus,Edit,Refresh} from "@element-plus/icons-vue"
 
 let data = reactive({
     allData:[],
@@ -153,14 +155,22 @@ onMounted(async () =>{
 })
 
 //加载所有实验
-async function getList_num() {
+async function getList_num(): Promise<void> {
     await $api.All_ExeList().then((res)=>{
         data.allData = res.data.ExpCount;
         data.expList = res.data.ExpSerialList;
     })
 }
 
-//根据实验名称，模糊查询，未接好，后端无对应接口
+async function AA() {
+    await $api.All_ExeList().then((res)=>{
+        data.allData = res.data.ExpCount;
+        data.expList = res.data.ExpSerialList;
+        data.selectName = ''
+    })
+}
+
+//根据实验名称，模糊查询
 async function selectExp() {
     let req = "?keyWord=" + data.selectName
     await $api.selectExp(req).then(res =>{
@@ -176,6 +186,7 @@ async function selectExp() {
         }
     })
 }
+
 
 //删除实验
 async function deleteExp(id:number, index:number) {
