@@ -22,8 +22,8 @@ const expModel = {
         return requsets.delete(http.value + "/api/v1/exp/expDel" + id)
     },
     //提交修改实验信息
-    updateExp:(param:any)=>{
-        return requsets.post(http.value + "/api/v1/exp/updateExp", param)
+    updateExp:(id:any, param:any)=>{
+        return requsets.post(http.value + "/api/v1/exp/updateExp"+id, param)
     },
     //模糊查询实验信息
     selectExp:(keyWord:any)=>{
