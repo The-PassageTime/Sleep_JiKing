@@ -56,7 +56,6 @@ const props = defineProps({
 
 //添加实验
 async function addExp() {
-    console.log('提交成功add')
     await $api.addExp(addInfo).then(res =>{
         // 显示查询结果
         if(res.message == "操作成功"){

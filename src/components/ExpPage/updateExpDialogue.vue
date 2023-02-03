@@ -61,7 +61,8 @@ function changeExp(expList:[], id:number, index:number) {
 
 //提交修改实验内容，返回信息没有统一
 async function commitChange() {
-    await $api.updateExp(updateInfo).then((res)=>{
+    var req = "?expID=" + updateInfo.experiment_id
+    await $api.updateExp(req, updateInfo).then((res)=>{
         if(res.message == "操作成功"){
             //修改成功
             ElMessage({
