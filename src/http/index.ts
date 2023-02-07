@@ -17,7 +17,7 @@ const expModel = {
         //requsets.defaults.headers.common['Authorization'] = localStorage["token"];
         return requsets.get(http.value + "/api/v1/items/GetKindList");
     },
-    //删除实验，未连接好
+    //删除实验
     delExp:(id:any) =>{
         return requsets.delete(http.value + "/api/v1/exp/expDel" + id)
     },
@@ -25,15 +25,24 @@ const expModel = {
     updateExp:(id:any, param:any)=>{
         return requsets.post(http.value + "/api/v1/exp/updateExp"+id, param)
     },
+    updateObj:(id:any, param:any)=>{
+        return requsets.post(http.value + "/api/v1/items/UpdateItemsKind"+id, param)
+    },
     //模糊查询实验信息
     selectExp:(keyWord:any)=>{
         return requsets.get(http.value + "/api/v1/exp/fuzzySearchExp" + keyWord)
+    },
+    selectObj:(keyWord:any)=>{
+        return requsets.get(http.value + "/api/v1/items/fuzzySearchItems" + keyWord)
     },
     //添加实验信息
     addExp:(param:any)=>{
         return requsets.post(http.value + "/api/v1/exp/addOneExp", param)
     },
-
+    //添加物品信息
+    addObj:(param:any)=>{
+        return requsets.post(http.value + "/api/v1/items/addItemsKind", param)
+    },
     //图片
     //查看上传的图片
     viewPhoto:(id:any)=>{
@@ -47,11 +56,26 @@ const expModel = {
             }
         })
     },
+    //提交图片
+    WcommitPhoto:(itemName:string, param:any)=>{
+        return requsets.post(http.value + "/api/v1/items/postItemsImage" + itemName, param,{
+            headers: {
+                'Content-Type':'multipart/form-data'
+                }
+        })
+    },
     //删除图片
     delPhoto:(req:any)=>{
         return requsets.delete(http.value + "/api/v1/exp/deleteExpImage" + req)
     },
-
+    //删除物体图片
+    delObjImg:(rep:any)=>{
+        return requsets.delete(http.value + "/api/v1/items/delItemsImage" + rep)
+    },
+    //删除物品
+    delObj:(req:any)=>{
+        return requsets.delete(http.value + "/api/v1/items/DelItemsKind" + req)
+    },
     //反应物
     //获取反应物列表
     getReact:(id:any)=>{

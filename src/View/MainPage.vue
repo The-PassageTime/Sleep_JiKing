@@ -4,13 +4,13 @@
         <div>
             <el-card style="border-radius: 8px"  max-height="700px">
                 <el-form style="text-align:left; padding-bottom: 1rem;">
-                    <el-input placeholder="只能根据实验名称查询" v-model="data.selectName" style="width:20rem; padding-right: 1rem;" clearable/>
+                    <el-input placeholder="只能根据实验名称查询" v-model="data.selectName" style="width:15rem; padding-right: 1rem;" clearable/>
                     <el-button :icon="Search" @click="selectExp">搜索</el-button>
                     <el-button :icon="Plus" @click="data.addVisible = true">添加实验</el-button>
                     <el-button :icon="Refresh" @click="AA"></el-button>
                 </el-form>
 
-                <el-table :data="data.expList" border style="width: 100%" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
+                <el-table :data="data.expList" border style="width: 100%" height="700px" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
                 :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }"  >
                     <el-table-column prop="Exp.experiment_id" label="实验编号" width="130" ></el-table-column>
                     <el-table-column prop="Exp.experiment_name" label="实验名称" width="130"></el-table-column>
@@ -241,7 +241,6 @@ let imgComponent = ref();
 //查看实验所有图片
 function viewPhoto(experiment_id:any) {
     data.addPhotoVisible = true
-    console.log(data.addPhotoVisible)
     imgComponent.value.viewPhoto(experiment_id)
 }
 

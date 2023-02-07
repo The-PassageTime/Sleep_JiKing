@@ -3,7 +3,7 @@
     <el-dialog v-model="IsShowLogin" title="登&emsp;&emsp;录" width="500px" height="800px"  :before-close="handleClose">
       <div class="Big">
         <div class="One">
-          <el-image src="src/assets/black.png" fit="contain" />
+          <el-image :src="require('@/assets/black.png')" fit="contain" />
         </div>
         <div class="Two">
           <el-form :model="form" label-width="60px" style="padding-right:20px">
@@ -45,7 +45,6 @@
     UName: "",
     UPassword: "",
   }
-
   const Submit = async () => {
     var data = {
       uid: form.value.UId,
@@ -71,7 +70,6 @@
 //function Submit(){}
 
 const FindPass = () => (
-  console.log('CloseLogin'),
   store.commit('CloseLogin'),
   store.commit('OpenFind')
 )

@@ -67,6 +67,7 @@ async function viewPhoto(experiment_id:any) {
     let req = "?id=" + experiment_id;
     await $api.viewPhoto(req).then(res =>{
         if(res.message == "操作成功"){
+            console.log(res)
             data.urls = []
             if(res.data !== null){
                 for(let i = 0; i < res.data.length; i++) {
@@ -74,6 +75,7 @@ async function viewPhoto(experiment_id:any) {
                     data.urls.push(url)
                 }
                 data.emptyVisible = false
+                console.log('穆'+data.urls)
             }else{
                 data.emptyVisible = true
             }

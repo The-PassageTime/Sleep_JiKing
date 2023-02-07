@@ -27,7 +27,7 @@
 </template>
 <script lang="ts" setup>
 //import {userStore} from 'vuex'
-
+//import { watch,computed,onMounted} from 'vue';
 import LoginIn from './LoginIn.vue';
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -39,7 +39,6 @@ const store = useStore()
 const OpenLogin = () => {
   store.commit('OpenLogin')
 }
-
 
 const LoginOut = () => {
   localStorage.removeItem('UId');
