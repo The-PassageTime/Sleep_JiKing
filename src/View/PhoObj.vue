@@ -4,13 +4,11 @@
         <h3>查看物品图片</h3>
         </template>
         <div >
-            <div class="demo-image" v-if="Pho.path=='http://120.26.64.169:80'">
+            <div class="demo-image" v-if="Pho.have==false">
                 <el-empty description="暂无添加图片"/>
             </div>
             <div v-else>
                 <el-image  :src="Pho.path" fit="fill"></el-image>
-                <div>{{ Pho.name }}</div>
-                <div>{{ Pho.path }}</div>
                 <div>
                     <el-button type="danger" :icon="Delete" circle  @click="delImg()"></el-button>
                     <el-divider border-style="dashed" />
@@ -33,6 +31,7 @@
     </el-drawer>
 </template>
 <script lang="ts" setup>
+import { nanoid } from 'nanoid'
 import { Upload,Plus,Delete} from "@element-plus/icons-vue"
 import $api from "@/http/index"
 import { ElMessage } from 'element-plus'
@@ -51,21 +50,25 @@ const handleClose = (done: () => void) => {
     store.commit('ClosePhoto')
     done();
 };
+//传过来的属性
 let props = defineProps<{
     Imgfo:{
         name:string,
         unit:string,
         remark:string,
         path:string,
+        have:boolean,
         default:"失败"
     }
 }>()
 let {Imgfo} =toRefs(props)
+//声明组件属性以接受父组件传来属性并提供修改办法
 let Pho =reactive({
     name:"",
     unit:"",
     remark:"",
     path:"",
+    have:false,
 })
 
 //监听窗口打开开始
@@ -74,10 +77,11 @@ const getShowTask = computed(()=>{
 })
 watch(getShowTask,(newVal, oldVal)=>{
 
-    console.log('Photo开始'+{ newVal, oldVal })
+    console.log('Photo开始', { newVal, oldVal })
     console.log('原来图片url'+Imgfo.value.path);
     Pho.name = Imgfo.value.name;
     Pho.path = Imgfo.value.path;
+    Pho.have = Imgfo.value.have;
 })
 
 //提交图片
@@ -89,24 +93,33 @@ let data = reactive({
 async function commitPhoto(){
     var urlList=new FormData();
     data.ImgUrl.forEach(function(file){
-        urlList.append("item",file.raw)
+        urlList.append("item", file.raw)
     })
     let req = "?itemName=" + Pho.name;
-    await $api.WcommitPhoto(req,urlList ).then(res =>{
+    await $api.WcommitPhoto(req, urlList).then(res =>{
         console.log('上传图片'+res);
         if(res.code=='1001'){
-            console.log('成功'+res);
+            console.log('成功', res);
             ElMessage({
                 message: '图片增加成功！',
                 duration: 1000,
                 type: 'success'
             })
             //刷新物品页面
+            console.log('上传图片')
             emit('fun');
+            Pho.have=true;
             _this.$forceUpdate()
             //清空上传栏
             data.ImgUrl=[];
             console.log('现在的路径'+Imgfo.value.path);
+            Pho.path = Pho.path.slice(0, Pho.path.indexOf("?id=")) + "?id=" + nanoid();
+        }else{
+            ElMessage({
+                message: '图片增加失败！',
+                duration: 1000,
+                type: 'error'
+            })
         }
     })
 }
@@ -129,9 +142,9 @@ async function delImg(){
                 duration: 1000,
                 type: 'success'
             })
-
             emit('fun');
             _this.$forceUpdate()
+            Pho.have = false;
         }else{
             ElMessage({
                 message: '删除失败！',
@@ -141,19 +154,4 @@ async function delImg(){
     }
     })
 }
-/*function Jian (Shuru:string,Chart1:string,Chart2:string){
-    var arr = new Array();
-    var ArryShuRu = Shuru.split("&");
-    for(var i=0;i<ArryShuRu.length;i++){
-        var paramArr = ArryShuRu[i].split("=");
-        for(var j=0;j<paramArr.length;j++){
-            var FinArr = paramArr[i].split("/")
-            if(FinArr[0]!=Chart1){
-                if(FinArr[0]!=Chart2){
-                    arr.push(paramArr[i]);
-                }
-            }
-        }
-    }
-}*/
 </script>

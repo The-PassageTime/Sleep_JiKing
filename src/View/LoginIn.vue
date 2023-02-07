@@ -17,7 +17,6 @@
           <el-button type="primary" @click="Submit" style="width:100%">确定</el-button>
         </el-form-item>
         <el-form-item >
-        <el-link  @click="FindPass">忘记密码？</el-link>
       </el-form-item>
       </el-form>
         </div>
@@ -67,13 +66,12 @@
       ElMessage.error(res.msg)
     }
   }
-//function Submit(){}
-
+/*function Submit(){}
+<el-link  @click="FindPass">忘记密码？</el-link>
 const FindPass = () => (
   store.commit('CloseLogin'),
   store.commit('OpenFind')
-)
-
+)*/
 </script>
 <style>
 .el-dialog {

@@ -24,7 +24,7 @@
                         <el-table-column   label="操作" width="400">
                             <template #default="scope">
                             <el-button type="danger" :icon="Delete" @click="WeiDelete(scope.row.name)">删除</el-button>
-                            <el-button type="primary"  :icon="Picture" @click="ShowImg(scope.row.name,Alldata.url[scope.$index])">添加图片</el-button>
+                            <el-button type="primary"  :icon="Picture" @click="ShowImg(scope.row.name,Alldata.url[scope.$index],scope.row.have)">添加图片</el-button>
                             <el-button type="primary"  :icon="DocumentAdd" @click="Change(scope.row.name,scope.row.unit,scope.row.remark)">修改</el-button>
                             </template>
                         </el-table-column>
@@ -55,6 +55,7 @@ let Alldata =reactive({
             unit:"",
             remark:"",
             path:"",
+            have:"",
         }
     ],
     input:"",
@@ -76,16 +77,14 @@ async function Get_Objlist () {
     await $api.All_ObjList().then((res)=>{
         Alldata.ObjList.length=0;
         Alldata.url.length=0;
-        console.log('我清空了数组长度')
+        // console.log('我清空了数组长度')
         Alldata.ObjList = res.data;
-        console.log('循环长度'+res.data.length)
         for(let i = 0; i < res.data.length; i++) {
             //console.log(res.data[i].name+'  ssss   '+ res.data[i].path)
-            let xx = "http://120.26.64.169:80" + res.data[i].path;
+            let xx = "http://120.26.64.169:80" + res.data[i].path + "?id=" + Number(Date.now());
             Alldata.url.push(xx)
         }
     })
-    console.log(Alldata.url);
 }
 //传给子组件的参数
 const AAc = reactive({
@@ -93,6 +92,7 @@ const AAc = reactive({
     unit:"",
     remark:"",
     path:"",
+    have:Boolean,
 })
 
 //模糊查询
@@ -161,15 +161,18 @@ const getShowImg = computed(()=>{
 	return store.state.IsShowPhoto;
 })
 
-const ShowImg = (ObjN:string,Img:string) => {
+const ShowImg = (ObjN:string,Img:string,Have:any) => {
     AAc.name =  ObjN;
     AAc.path =  Img;
+    AAc.have =  Have;
     store.commit('OpenPhoto')
     watch(getShowImg,(nv,ov)=>{
         BB();
         console.log(nv,ov);
     })
 }
+
+
 const NewImg=(N:string,U:string,R:string)=>{
     AAc.name = N;
     AAc.unit = U;
