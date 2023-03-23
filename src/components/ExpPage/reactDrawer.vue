@@ -83,6 +83,9 @@ async function showReact(id:any){
     var req = "/" + id
     await $api.getReact(req).then(res=>{
         if(res.message == "操作成功"){
+            console.log("res")
+            console.log(res)
+
             reactInfo.react = res.data
             for(let i = 0; i < res.data.length; i++){
                 initInfo[i] = res.data[i].Rea.reaName

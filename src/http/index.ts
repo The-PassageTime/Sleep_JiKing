@@ -125,6 +125,16 @@ const expModel = {
     /*getToken:(rep:any)=>{
         return requsets.post(http.value + "/api/v1/login" ,rep); 
     },*/
+    //实验环境
+    getEnv:(id:any)=>{
+        return requsets.get(http.value + "/api/v1/env/envCondition" + id)
+    },
+    updateEnv:(req:any,req1:any)=>{
+        return requsets.post(http.value + "/api/v1/env/UpdateEnvCondition" + req1, req)
+    },
+    addEnv:(id:any, req:any)=>{
+        return requsets.post(http.value + "/api/v1/env/AddEnvCondition" + id, req)
+    }
 }
 
 

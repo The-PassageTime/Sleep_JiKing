@@ -86,7 +86,13 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column  prop="Env.temperature" label="实验环境" width="130"></el-table-column>
+                    <el-table-column  prop="Env.temperature" label="实验环境" width="130">
+                        <template v-slot="scope">
+                            <el-link>
+                                <el-icon @click="showEnv(scope.row.Exp.experiment_id)" size="large"><More /></el-icon>
+                            </el-link>
+                        </template>
+                    </el-table-column>
                     <el-table-column  prop="Exp.remark" label="备注" width="180"></el-table-column>
                     <el-table-column  prop="Exp.conductDate" label="实验日期" width="130"></el-table-column>
                     <el-table-column  label="操作" width="270">
@@ -119,6 +125,9 @@
     <!-- 查看催化剂抽屉 -->
     <cataDrawer ref="cataDraw" v-model="data.cataVisible" />
 
+    <!-- 查看环境信息抽屉 -->
+    <envDrawer ref="envDraw" v-model="data.envVisible" />
+
 </template>
 
 <script lang="ts" setup>
@@ -130,10 +139,11 @@ import addExpDialogue from "@/components/ExpPage/addExpDialogue.vue";
 import myImgDrawer from "@/components/ExpPage/myImgDrawer.vue";
 import resultantDrawer from "@/components/ExpPage/resultantDrawer.vue";
 import cataDrawer from "@/components/ExpPage/cataDrawer.vue";
-//import router from "@/routes";
+import envDrawer from "@/components/ExpPage/envDrawer.vue";
+
 import {onMounted,reactive,ref} from "vue";
 import { ElMessage } from 'element-plus'
-import { Search,Plus,Edit,Refresh} from "@element-plus/icons-vue"
+import { Search,Plus,Edit,Refresh,More} from "@element-plus/icons-vue"
 
 let data = reactive({
     allData:[],
@@ -146,7 +156,8 @@ let data = reactive({
     addPhotoVisible:false,
     reactVisible:false,
     resultantVisible:false,
-    cataVisible:false
+    cataVisible:false,
+    envVisible:false
 })
 
 //挂载时获取所有实验
@@ -159,6 +170,7 @@ async function getList_num(): Promise<void> {
     await $api.All_ExeList().then((res)=>{
         data.allData = res.data.ExpCount;
         data.expList = res.data.ExpSerialList;
+        console.log(res)
     })
 }
 
@@ -186,7 +198,6 @@ async function selectExp() {
         }
     })
 }
-
 
 //删除实验
 async function deleteExp(id:number, index:number) {
@@ -263,6 +274,13 @@ let cataDraw = ref();
 async function showCata(id:null) {
     data.cataVisible = true
     cataDraw.value.showCata(id)
+}
+
+/* 实验环境组件 */
+let envDraw = ref();
+async function showEnv(id:null) {
+    data.envVisible = true
+    envDraw.value.showenv(id)
 }
 
 
