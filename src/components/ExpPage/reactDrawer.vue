@@ -40,6 +40,15 @@
                 </template>
             </el-table-column>
 
+            <el-table-column label="浓度">
+                <template v-slot="scope">
+                    <span v-if="scope.$index === reactInfo.rowIndex">
+                    <el-input v-model.number="scope.row.Rea.concentration" placeholder="浓度"/>
+                </span>
+                <span v-else>{{scope.row.Rea.concentration}}</span>
+                </template>
+            </el-table-column>
+
             <el-table-column label="备注">
                 <template v-slot="scope">
                 <span v-if="scope.$index === reactInfo.rowIndex">
@@ -83,9 +92,6 @@ async function showReact(id:any){
     var req = "/" + id
     await $api.getReact(req).then(res=>{
         if(res.message == "操作成功"){
-            console.log("res")
-            console.log(res)
-
             reactInfo.react = res.data
             for(let i = 0; i < res.data.length; i++){
                 initInfo[i] = res.data[i].Rea.reaName
@@ -106,7 +112,7 @@ async function showReact(id:any){
 
 //添加反应物，多出一行
 function addReact(){
-    reactInfo.react.push({Rea:{reactantID:null, reaName:'', amount:null, remark:'', experimentID:reactInfo.exp_id},Unit:""})
+    reactInfo.react.push({Rea:{reactantID:null, reaName:'', amount:null, concentration:null,remark:'', experimentID:reactInfo.exp_id},Unit:""})
     reactInfo.add = true
     reactInfo.editVisible = false
     reactInfo.finishVisible = true

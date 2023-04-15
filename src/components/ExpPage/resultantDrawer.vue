@@ -41,6 +41,15 @@
             </template>
         </el-table-column>
 
+        <el-table-column label="活性值">
+            <template v-slot="scope">
+            <span v-if="scope.$index === resultantInfo.rowIndex">
+                <el-input v-model.number="scope.row.Res.activity" placeholder="活性值"/>
+            </span>
+            <span v-else>{{scope.row.Res.activity}}</span>
+            </template>
+        </el-table-column>
+
         <el-table-column label="备注">
             <template v-slot="scope">
             <span v-if="scope.$index === resultantInfo.rowIndex">
@@ -106,7 +115,7 @@ await $api.getresultant(req).then(res=>{
 
 //添加生成物，多出一行
 function addresultant(){
-    resultantInfo.resultant.push({Res:{resultantID:null, resName:'', amount:null, remark:'', experimentID:resultantInfo.exp_id},Unit:""})
+    resultantInfo.resultant.push({Res:{resultantID:null, resName:'', amount:null, activity:null, remark:'', experimentID:resultantInfo.exp_id},Unit:""})
     resultantInfo.add = true
     resultantInfo.editVisible = false
     resultantInfo.finishVisible = true
@@ -129,7 +138,7 @@ async function commitresultantChange(index:number){
     }
 }
 
-//添加生成物 不行
+//添加生成物 
 async function commitAdd(index:number) {
     var req1 = "?id=" + resultantInfo.exp_id
     await $api.addresultant(req1, resultantInfo.resultant[index].Res).then(res=>{

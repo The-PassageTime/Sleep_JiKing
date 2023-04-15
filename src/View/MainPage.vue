@@ -12,9 +12,10 @@
 
                 <el-table :data="data.expList" border style="width: 100%" height="700px" :row-style="{height: '50px'}" :header-row-style="{height:'60px'}"
                 :cell-style= "{textAlign:'center'}" :header-cell-style="{ 'text-align': 'center' }"  >
-                    <el-table-column prop="Exp.experiment_id" label="实验编号" width="130" ></el-table-column>
-                    <el-table-column prop="Exp.experiment_name" label="实验名称" width="130"></el-table-column>
-                    <el-table-column label="反应物" width="130">                       
+                    <el-table-column prop="Exp.experiment_id" label="实验编号" width="150" ></el-table-column>
+                    <el-table-column prop="Exp.experiment_name" label="实验名称" ></el-table-column>
+                    <el-table-column prop="Exp.method" label="实验方法" ></el-table-column>
+                    <el-table-column label="反应物" >                       
                         <template v-slot="scope">
                             <div v-if="scope.row.ReaName?.length > 1">
                                 <el-tooltip placement="top">
@@ -38,7 +39,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="生成物" width="130">
+                    <el-table-column label="生成物" >
                         <template  v-slot="scope">
                             <div v-if="scope.row.ResName?.length>1">
                                 <el-tooltip placement="top">
@@ -62,39 +63,15 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="催化剂">
-                        <template  v-slot="scope">
-                            <div v-if="scope.row.cataName?.length>1">
-                                <el-tooltip placement="top">
-                                <template #content>剩余物品：
-                                    <li v-for="MyN in scope.row.cataName?.length-1" :key="MyN">
-                                        {{scope.row.cataName?.[MyN]}}
-                                    </li>
-                                </template>
-                                {{scope.row.cataName?.[0]}}
-                                </el-tooltip>
-                                <el-link>
-                                    <el-icon class="el-icon--right" @click="showCata(scope.row.Exp.experiment_id)" size="large"><Edit /></el-icon>
-                                </el-link>
-                            </div>
-                            <div v-else>
-                                {{scope.row.cataName?.[0]}}
-                                <el-link>
-                                    <el-icon class="el-icon--right" @click="showCata(scope.row.Exp.experiment_id)" size="large"><Edit /></el-icon>
-                                </el-link>
-                            </div>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column  prop="Env.temperature" label="实验环境" width="130">
+                    <el-table-column  prop="Env.temperature" label="实验环境">
                         <template v-slot="scope">
                             <el-link>
                                 <el-icon @click="showEnv(scope.row.Exp.experiment_id)" size="large"><More /></el-icon>
                             </el-link>
                         </template>
                     </el-table-column>
-                    <el-table-column  prop="Exp.remark" label="备注" width="180"></el-table-column>
-                    <el-table-column  prop="Exp.conductDate" label="实验日期" width="130"></el-table-column>
+                    <el-table-column  prop="Exp.remark" label="备注" width="270"></el-table-column>
+                    <el-table-column  prop="Exp.conductDate" label="实验日期"></el-table-column>
                     <el-table-column  label="操作" width="270">
                         <template #default="scope">
                             <el-button type="primary" @click="viewPhoto(scope.row.Exp.experiment_id)">图片</el-button>
@@ -122,9 +99,6 @@
     <!-- 查看生成物抽屉 -->
     <resultantDrawer ref="resultantDraw" v-model="data.resultantVisible" />
 
-    <!-- 查看催化剂抽屉 -->
-    <cataDrawer ref="cataDraw" v-model="data.cataVisible" />
-
     <!-- 查看环境信息抽屉 -->
     <envDrawer ref="envDraw" v-model="data.envVisible" />
 
@@ -138,7 +112,6 @@ import updateExpDialogue from "@/components/ExpPage/updateExpDialogue.vue"
 import addExpDialogue from "@/components/ExpPage/addExpDialogue.vue";
 import myImgDrawer from "@/components/ExpPage/myImgDrawer.vue";
 import resultantDrawer from "@/components/ExpPage/resultantDrawer.vue";
-import cataDrawer from "@/components/ExpPage/cataDrawer.vue";
 import envDrawer from "@/components/ExpPage/envDrawer.vue";
 
 import {onMounted,reactive,ref} from "vue";
@@ -156,7 +129,6 @@ let data = reactive({
     addPhotoVisible:false,
     reactVisible:false,
     resultantVisible:false,
-    cataVisible:false,
     envVisible:false
 })
 
@@ -170,7 +142,7 @@ async function getList_num(): Promise<void> {
     await $api.All_ExeList().then((res)=>{
         data.allData = res.data.ExpCount;
         data.expList = res.data.ExpSerialList;
-        console.log(res)
+        // console.log(res)
     })
 }
 
@@ -242,6 +214,7 @@ function changeExpList(updateInfo:[]){
     data.expList[data.changeIndex].Exp.experiment_id = updateInfo.experiment_id
     data.expList[data.changeIndex].Exp.experiment_name = updateInfo.experiment_name
     data.expList[data.changeIndex].Exp.conductDate = updateInfo.conductDate
+    data.expList[data.changeIndex].Exp.method = updateInfo.method
     data.expList[data.changeIndex].Exp.remark = updateInfo.remark
     data.updateVisible = false
 }
@@ -267,13 +240,6 @@ let resultantDraw = ref();
 async function showResultant(id:null) {
     data.resultantVisible = true
     resultantDraw.value.showResultant(id)
-}
-
-//催化剂子组件
-let cataDraw = ref();
-async function showCata(id:null) {
-    data.cataVisible = true
-    cataDraw.value.showCata(id)
 }
 
 /* 实验环境组件 */

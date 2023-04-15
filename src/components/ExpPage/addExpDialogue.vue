@@ -18,6 +18,9 @@
                  style="width: 400px"
                  value-format="YYYY-MM-DD"
              ></el-date-picker>
+            </el-form-item>
+             <el-form-item label="实验方法:" prop="method">
+             <el-input v-model="addInfo.method" />
              </el-form-item>
              <el-form-item label="备注:">
              <el-input v-model="addInfo.remark" />
@@ -44,6 +47,7 @@
      experiment_name:"",
      experiment_id:null,
      conductDate:"",
+     method:"",
      remark:""
  })
  const props = defineProps({
@@ -67,6 +71,8 @@
              addInfo.experiment_id = null
              addInfo.experiment_name = ""
              addInfo.conductDate = ""
+             addInfo.method = ""
+             
          }else{
              //添加失败，根据返回message显示提示信息
              ElMessage({
@@ -82,6 +88,7 @@
      experiment_id: [{ required: true, message: '请输入实验编号！', trigger: 'blur' },],
      experiment_name: [{ required: true, message: '请输入实验名称！', trigger: 'blur' },],
      conductDate: [{ required: true, message: '请输入实验日期！', trigger: 'blur' },],
+     method: [{ required: true, message: '请输入实验方法！', trigger: 'blur' },],
  })
  const submitForm = async (formEl: FormInstance | undefined) => {
      if (!formEl) {

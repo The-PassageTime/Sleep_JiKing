@@ -18,6 +18,10 @@
                 ></el-date-picker>
             </el-form-item>
 
+            <el-form-item label="实验方法:">
+                <el-input v-model="updateInfo.method" />
+            </el-form-item>
+
             <el-form-item label="备注:">
                 <el-input v-model="updateInfo.remark" />
             </el-form-item>
@@ -42,6 +46,7 @@ let updateInfo = reactive({
     experiment_name:"",
     experiment_id:0,
     conductDate:"",
+    method:"",
     remark:""
 })
 
@@ -56,6 +61,7 @@ function changeExp(expList:[], id:number, index:number) {
     updateInfo.experiment_id = expList[index].Exp.experiment_id
     updateInfo.experiment_name = expList[index].Exp.experiment_name
     updateInfo.conductDate = expList[index].Exp.conductDate
+    updateInfo.method = expList[index].Exp.method
     updateInfo.remark = expList[index].Exp.remark
 }
 
